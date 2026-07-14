@@ -2,7 +2,7 @@
 """
 Created on Tue Jul 14 07:36:24 2026
 
-@author: xinin
+@author: Xining Yang
 """
 
 import os
