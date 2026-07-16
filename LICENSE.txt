@@ -1,0 +1,6 @@
+Copyright (c) 2026 Xining Yang. All rights reserved.
+
+This software and associated code files are proprietary and confidential. 
+Permission is granted solely for the purpose of reading, reviewing, and peer-reviewing the code. 
+
+No part of this software may be reproduced, distributed, modified, or executed for any other purpose without the prior written permission of the copyright holder.
