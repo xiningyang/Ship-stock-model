@@ -44,15 +44,15 @@ year_list2=[start_year] + year_list
 # ==================================================================================================
 
 ship_type_colors = {
-    'Bulk carriers': '#8da0cb',          # 保留
-    'Chemical tankers': '#9ecae1',       # 稍微偏绿一点
-    'Container ships': '#ef8a62',        # 保留为唯一主暖色
-    'Crude oil tankers': '#969696',      # 比现在更深一点（区分灰）
-    'Gas tankers': '#fddbc7',            # 保留
-    'General cargo ships': '#bcbddc',    # 蓝→紫灰，拉开和地图
-    'Oil product tankers': '#f4a582',    # 保留
-    'Refrigerated cargo ships': '#d9d9d9',# 保留
-    'Ro-Ro cargo ships': '#e0f3f8'       # 偏青而非蓝
+    'Bulk carriers': '#8da0cb',          
+    'Chemical tankers': '#9ecae1',       
+    'Container ships': '#ef8a62',        
+    'Crude oil tankers': '#969696',      
+    'Gas tankers': '#fddbc7',            
+    'General cargo ships': '#bcbddc',    
+    'Oil product tankers': '#f4a582',    
+    'Refrigerated cargo ships': '#d9d9d9',
+    'Ro-Ro cargo ships': '#e0f3f8'       
 }
 
 #################### Sankey diagram ############################
@@ -60,16 +60,16 @@ ship_type_colors = {
 # 1.调色板
 
 NPG_PALETTE = [
-    '#1f78b4',  # 强蓝（Build 1）
-    '#33a02c',  # 强绿（Build 2）
-    '#e31a1c',  # 强红（Build 3）
-    '#ff7f00',  # 强橙
-    '#6a3d9a',  # 深紫
-    '#b15928',  # 棕（工业/材料感）
-    '#a6cee3',  # 浅蓝（次要）
-    '#b2df8a',  # 浅绿
-    '#fb9a99',  # 浅红
-    '#fdbf6f'   # 浅橙
+    '#1f78b4',
+    '#33a02c',
+    '#e31a1c',
+    '#ff7f00',
+    '#6a3d9a',
+    '#b15928',
+    '#a6cee3',
+    '#b2df8a',
+    '#fb9a99',
+    '#fdbf6f'
 ]
 
 
@@ -91,7 +91,7 @@ df['Source'] = simplify(df, 'Build', 6)
 df['Middle'] = simplify(df, 'Owner', 6)
 df['Target'] = simplify(df, 'Flag', 6)
 
-# 3. 节点构建（顺序 = 颜色稳定性的生命线）
+# 3. 节点构建
 
 src_nodes = sorted(df['Source'].unique())
 mid_nodes = sorted(df['Middle'].unique())
@@ -130,7 +130,6 @@ for _, r in g1.iterrows():
 print(g1)
 g1.to_csv(add + '/04-figures/Fig1b1.csv')
 
-# Owner → Flag（仍然用 Source 的颜色）
 g2 = df.groupby(['Source', 'Middle', 'Target'])['LDT'].sum().reset_index()
 for _, r in g2.iterrows():
     links['source'].append(node_id[f"{r.Middle} (Owner)"])
@@ -152,7 +151,6 @@ fig_sankey = go.Figure(go.Sankey(
     ),
     link=links,
 
-    # 节点字体控制
     textfont=dict(
         size=38,
         family='Helvetica',
@@ -162,7 +160,6 @@ fig_sankey = go.Figure(go.Sankey(
 ))
 
 
-# 列标题
 annotations = [
     dict(x=0.0, y=-0.06, text='Build country', xref='paper', yref='paper',
          showarrow=False, font=dict(size=38, family='Helvetica', color='black', weight='bold')),
@@ -176,8 +173,6 @@ fig_sankey.update_layout(
     font=dict(size=24, family='Helvetica'),
     width=1500,
     height=1000,
-    # paper_bgcolor='white',
-    # plot_bgcolor='white',
     margin=dict(l=0, r=0, t=0, b=60),
     annotations=annotations
 )
@@ -191,23 +186,22 @@ fig_sankey.show()
 
 #################### Global governance fragmentation ############################
 
-# ===== 字体风格设置 =====
 mpl.rcParams.update({
-    'font.family': 'sans-serif',       # 无衬线字体
-    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],  # 可选
-    'font.size': 8,                     # 主字体大小
-    'axes.titlesize': 9,                # 标题
-    'axes.labelsize': 8,                # 坐标轴标签
-    'xtick.labelsize': 7,               # x刻度字体
-    'ytick.labelsize': 7,               # y刻度字体
-    'legend.fontsize': 7,               # 图例
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
+    'font.size': 8,                     
+    'axes.titlesize': 9,                
+    'axes.labelsize': 8,                
+    'xtick.labelsize': 7,               
+    'ytick.labelsize': 7,               
+    'legend.fontsize': 7,               
     'legend.title_fontsize': 8,
-    'figure.titlesize': 10,             # 整体 figure 标题
-    'axes.linewidth': 0.5,              # 坐标轴线宽
-    'xtick.direction': 'out',           # 刻度向外
+    'figure.titlesize': 10,             
+    'axes.linewidth': 0.5,              
+    'xtick.direction': 'out',           
     'ytick.direction': 'out',
-    'axes.edgecolor': '0.3',            # 坐标轴颜色稍浅
-    'text.color': '0.1',                # 黑色文本
+    'axes.edgecolor': '0.3',            
+    'text.color': '0.1',                
 })
 
 
@@ -215,25 +209,22 @@ from matplotlib.gridspec import GridSpec
 fig = plt.figure(figsize=(10, 10))
 
 gs = GridSpec(
-    nrows=2,      # 两行
-    ncols=2,      # 两列
+    nrows=2,
+    ncols=2,
     height_ratios=[1.5, 1],
     width_ratios=[1.7, 1],
-    hspace=-0.02,  # 行间距
-    wspace=0.07   # 列间距
+    hspace=-0.02,
+    wspace=0.07
 )
 
-# 第一行：1 列，横跨两列
 ax1 = fig.add_subplot(gs[0, :])
-
-# 第二行：2 列
 ax2 = fig.add_subplot(gs[1, 0])
 ax3 = fig.add_subplot(gs[1, 1])
 
-pos = ax2.get_position()   # [x0, y0, width, height]
+pos = ax2.get_position()
 ax2.set_position([
     pos.x0,
-    pos.y0-0.045,   # ↓ 向下移动（0.02–0.08 之间微调）
+    pos.y0-0.045,
     pos.width,
     pos.height*1.1
 ])
@@ -244,7 +235,6 @@ ax3.set_title(r"$\bf{c.}$ Owner–flag ship tonnage", fontsize=12, color='black'
 
 ############# ax1 ###############################################################
 
-# data
 gdf1 = gpd.read_file(add + '02-data sources/Map/十段线.shp')
 gdf2 = gpd.read_file(add + '02-data sources/Map/世界各国行政区划.shp')
 
@@ -258,14 +248,13 @@ print(df.shape)
 
 print(df['DWT'].sum()/1e9)
 print(df['LDT'].sum()/1e6)
-df['LDT']=df['LDT']/1e6 # To million LDT
+df['LDT']=df['LDT']/1e6
 
 gdf2['LDT'] = 0.0
 for i in df.Owner_code.unique():
     if i in gdf2.SOC.unique():
         gdf2.loc[gdf2.SOC==i,'LDT']=df.loc[df.Owner_code==i ,'LDT'].sum()
 
-# Ten-dash line
 gdf1.plot(
     ax=ax1,
     color='black',
@@ -275,23 +264,18 @@ gdf1.plot(
     zorder=5
 )
 
-# Owner map
-
 cmap = mcolors.LinearSegmentedColormap.from_list(
     "NatureBlue_separated_plus",
     [
-        "#f5f7fb",  # 1️⃣ 更亮的起点
-        "#e3edf7",  # 2️⃣ 低值
-        "#c6dbef",  # 3️⃣ 中低
-        "#6baed6",  # 4️⃣ 中值
-        "#3182bd",  # 5️⃣ 中高
-        "#08519c",  # 6️⃣ 高值
-        "#08306b"   # 7️⃣ 深值，保留蓝调，不至于过黑
+        "#f5f7fb",
+        "#e3edf7",
+        "#c6dbef",
+        "#6baed6",
+        "#3182bd",
+        "#08519c",
+        "#08306b"
     ]
 )
-
-
-# 绘制地图，不显示 legend
 
 gdf2.plot(
     ax=ax1,
@@ -316,18 +300,15 @@ leg.set_bbox_to_anchor((0.006, 0.53))
 leg._legend_box.align = "left"
 leg.get_title().set_ha('left')
 
-leg.get_frame().set_linewidth(0.25)     # 0.2–0.4 很 Nature
-leg.get_frame().set_edgecolor('0.7')   # 深灰，比纯黑柔和
+leg.get_frame().set_linewidth(0.25)
+leg.get_frame().set_edgecolor('0.7')
 
-# ax1.set_axis_off()
-ax1.set_xticks([])  # 隐藏 x 轴刻度
-ax1.set_yticks([])  # 隐藏 y 轴刻度
+ax1.set_xticks([])
+ax1.set_yticks([])
 
 xmin, ymin, xmax, ymax = gdf2.total_bounds
 ax1.set_xlim(xmin, xmax)
 ax1.set_ylim(ymin, ymax*1.1)
-
-# top owners
 
 country_ship_owner=pd.read_excel(add + '/03-results/country_ship_Owner.xlsx').set_index('Owner_code')
 top_LDT_countries = (country_ship_owner.sort_values('Total', ascending=False).head(10)).index
@@ -338,43 +319,41 @@ def safe_centroid(gdf, projected_crs="EPSG:6933"):
 
 gdf2['centroid'] = safe_centroid(gdf2)
 
-# 固定饼图半径
 xmin, ymin, xmax, ymax = ax1.get_xlim()[0], ax1.get_ylim()[0], ax1.get_xlim()[1], ax1.get_ylim()[1]
 map_width = xmax - xmin
 fixed_radius = map_width * 0.035
 
-# 单独调整偏移（单位与 fixed_radius 一致）
 def get_offset(ct, fixed_radius):
     if ct == 'CHN':  # 中国
-        dx = fixed_radius * 0.1  # 向左
-        dy = fixed_radius * 1.8     # 向上
+        dx = fixed_radius * 0.1
+        dy = fixed_radius * 1.8
     elif ct == 'SGP':  # 新加坡
-        dx = fixed_radius * -1.5   # 向右
-        dy = fixed_radius * -1    # 向下
+        dx = fixed_radius * -1.5
+        dy = fixed_radius * -1 
     elif ct == 'MHL':  # 马绍尔群岛
-        dx = fixed_radius * -1.3     # 向右
-        dy = fixed_radius * -2.3     # 向上
+        dx = fixed_radius * -1.3     
+        dy = fixed_radius * -2.3     
     elif ct == 'JPN':  # 日本
-        dx = fixed_radius * 1.5   # 向右
-        dy = fixed_radius * 1     # 向上
+        dx = fixed_radius * 1.5   
+        dy = fixed_radius * 1     
     elif ct == 'LBR':  # 利比里亚
-        dx = fixed_radius * -1    # 向左
-        dy = fixed_radius * -1    # 向下
+        dx = fixed_radius * -1    
+        dy = fixed_radius * -1    
     elif ct == 'GRC':  # 希腊
-        dx = fixed_radius * 1.5     # 向右
-        dy = fixed_radius * -1  # 向下
+        dx = fixed_radius * 1.5     
+        dy = fixed_radius * -1  
     elif ct == 'DEU':  # 德国
-        dx = fixed_radius * 1.5     # 向右
-        dy = fixed_radius * 0.8   # 向上
+        dx = fixed_radius * 1.5     
+        dy = fixed_radius * 0.8   
     elif ct == 'KOR':  # 韩国
-        dx = fixed_radius * 2   # 向右
-        dy = fixed_radius * (-1.5)   # 向上
+        dx = fixed_radius * 2   
+        dy = fixed_radius * (-1.5)   
     elif ct == 'PAN':  # 巴拿马
-        dx = fixed_radius * -1.5  # 向左
-        dy = fixed_radius * -0.5  # 向下
+        dx = fixed_radius * -1.5  
+        dy = fixed_radius * -0.5  
     elif ct == 'GBR':  # 英国
-        dx = fixed_radius * (-1)     # 向右
-        dy = fixed_radius * 1   # 向上
+        dx = fixed_radius * (-1)     
+        dy = fixed_radius * 1   
     else:
         dx = 0
         dy = 0
@@ -386,12 +365,10 @@ for ct in top_LDT_countries:
     cx, cy = centroid.x, centroid.y
          
     dx, dy = get_offset(ct, fixed_radius)
-    x, y = cx + dx, cy + dy  # 饼图位置
+    x, y = cx + dx, cy + dy 
     
-    # 绘制连接线
     ax1.plot([cx, x], [cy, y], color='0.6', linewidth=0.4, zorder=4)
     
-    # 绘制饼图
     values = country_ship_owner.loc[ct, ship_type_list].values
     total = values.sum()
     start_angle = 0
@@ -417,15 +394,13 @@ for ct in top_LDT_countries:
         text_x=0
         
     ax1.text(
-        x+text_x, y + fixed_radius*1.1,  # 饼图上方一点
+        x+text_x, y + fixed_radius*1.1,
         coco.convert(names=ct, to='name_short'),
         ha='center', va='bottom',
         fontsize=8.5,
         color='0.15',
         zorder=3
     )
-
-# legend
 
 orig_legend = ax1.get_legend()
 
@@ -443,15 +418,14 @@ ship_legend = ax1.legend(
     fontsize=7
 )
 
-ship_legend._legend_box.align = "left"   # 整体左对齐
-ship_legend.get_title().set_ha('left')   # 标题文本左对齐
+ship_legend._legend_box.align = "left" 
+ship_legend.get_title().set_ha('left') 
 
 frame = ship_legend.get_frame()
-frame.set_linewidth(0.25)   # 控制边框粗细（Nature 常用 0.2–0.4）
-frame.set_edgecolor('0.7') # 浅灰，不抢视觉
-frame.set_facecolor((1, 1, 1, 0.85))  # 半透明白底
+frame.set_linewidth(0.25)
+frame.set_edgecolor('0.7')
+frame.set_facecolor((1, 1, 1, 0.85))
 
-# 保留原来的 LDT 图例
 if orig_legend is not None:
     ax1.add_artist(orig_legend)
 
@@ -469,7 +443,7 @@ ax2.imshow(img)
 ax2.axis('off')
 
 ax2.imshow(img, extent=[0, 1, 0, 1])
-ax2.imshow(img, aspect='auto')  # 根据 ax2 伸缩
+ax2.imshow(img, aspect='auto')
 
 ############# ax3 : bar for build country ###############################################################
 
@@ -477,15 +451,13 @@ ax2.imshow(img, aspect='auto')  # 根据 ax2 伸缩
 # 1. 数据读取与处理
 # ==========================
 df_raw = pd.read_csv(add + '/03-results/sd_0.csv')
-df_raw['LDT'] = df_raw['LDT'] / 1e6  # Million LDT
+df_raw['LDT'] = df_raw['LDT'] / 1e6
 df_raw['Type'] = df_raw['Type_Diogo']
 df_raw = df_raw[['Build', 'Owner', 'Flag', 'Type', 'LDT']]
 
-# 按 Owner / Flag 汇总
 owner_ldt = df_raw.groupby('Owner')['LDT'].sum()
 flag_ldt  = df_raw.groupby('Flag')['LDT'].sum()
 
-# Top 10 by Owner
 comparison_df = (
     pd.DataFrame({'Owner': owner_ldt, 'Flag': flag_ldt})
     .fillna(0)
@@ -509,30 +481,23 @@ COLOR_FLAG  = '#e67e22'
 
 y_pos = np.arange(len(countries))
 
-# 绘制横向条形图
 ax3.barh(y_pos, -owner_vals, color=COLOR_OWNER, height=0.6, alpha=0.7, label='Owner')
 ax3.barh(y_pos,  flag_vals, color=COLOR_FLAG,  height=0.6, alpha=0.7, label='Flag')
 
-# 添加图例，放在子图下方
 ax3.legend(
-    loc='upper center',          # 上方居中
-    bbox_to_anchor=(0.3, -0.06),# 下移到子图下方
-    ncol=2,                      # 两列
-    frameon=False,               # 无边框
+    loc='upper center',
+    bbox_to_anchor=(0.3, -0.06),
+    ncol=2,                      
+    frameon=False,               
     fontsize=9
 )
 
 ax3.text(0.67, -0.127, 'Unit: Million LDT', transform=ax3.transAxes, fontsize=9)
 
-
-
-# 隐藏左侧 spine
 ax3.spines['left'].set_visible(False)
 
-# 绘制中轴线（零线）
 ax3.axvline(0, color='0.2', linewidth=0.25)
 
-# 设置国家名在中轴上
 for y, country in zip(y_pos, countries):
     ax3.text(
         0-120, y, country,
@@ -540,17 +505,16 @@ for y, country in zip(y_pos, countries):
         fontsize=9, zorder=5
     )
 
-# 隐藏其他多余 spines
 ax3.spines['top'].set_visible(False)
 ax3.spines['right'].set_visible(False)
 ax3.spines['bottom'].set_linewidth(0.3)
 
 ax3.tick_params(axis='y', left=False)
-ax3.set_yticks([])  # 隐藏所有 y 轴刻度
+ax3.set_yticks([])
 ax3.tick_params(axis='x', labelsize=8)
 
-max_val = max(owner_vals.max(), flag_vals.max())  # 取绝对值最大
-margin = max_val * 0.1  # 留一点空白
+max_val = max(owner_vals.max(), flag_vals.max())
+margin = max_val * 0.1
 ax3.set_xlim(-120, 80)
 
 output_path = add + '/04-figures/Fig-1-Ship stock and governance chain.jpg'
@@ -571,23 +535,17 @@ from matplotlib.ticker import AutoMinorLocator
 # Figure 1 | SSP1-5 Baseline cumulative GHG with in-between shading
 # =====================================
 
-# 设置画布大小，4列的布局建议增加宽度
 fig = plt.figure(figsize=(12, 6))
 
-# 创建一个 2行 4列 的网格布局
 gs = fig.add_gridspec(2, 4, width_ratios=[2.0, 1, 1, 1])
 
-# 1. ax1：占据第 0 到 1 行（全两行），第 0 列
 ax1 = fig.add_subplot(gs[0:2, 0])
 ax1.set_title('Cumulative emissions', fontsize=13)
 
-# 2. 剩下的 6 个子图，分布在第 1, 2, 3 列
-# 第一行（剩下的三个）
 ax2 = fig.add_subplot(gs[0, 1])
 ax3 = fig.add_subplot(gs[0, 2])
 ax4 = fig.add_subplot(gs[0, 3])
 
-# 第二行（剩下的三个）
 ax5 = fig.add_subplot(gs[1, 1])
 ax6 = fig.add_subplot(gs[1, 2])
 ax7 = fig.add_subplot(gs[1, 3])
@@ -626,22 +584,20 @@ years_full = np.arange(2025, 2101)
 df_yearly = pd.DataFrame(index=years_full,columns=df_5y.columns,dtype=float)
 df_yearly.loc[2025] = 0
 for y in df_5y.index:
-    start_year = y - 4   # 2030 -> 2026
-    end_year = y         # 2030 -> 2030
+    start_year = y - 4   
+    end_year = y         
     df_yearly.loc[start_year:end_year] = df_5y.loc[y].values/5
 
-# print(df_yearly)
 GHG_SSPs_Baseline_Reference=df_yearly.cumsum()
 print(GHG_SSPs_Baseline_Reference)
-# print(GHG_SSPs_Baseline_Reference)
 
 df_5y = GHG_SSPs_Baseline_Reference_Low.copy()
 years_full = np.arange(2025, 2101)
 df_yearly = pd.DataFrame(index=years_full,columns=df_5y.columns,dtype=float)
 df_yearly.loc[2025] = 0
 for y in df_5y.index:
-    start_year = y - 4   # 2030 -> 2026
-    end_year = y         # 2030 -> 2030
+    start_year = y - 4   
+    end_year = y         
     df_yearly.loc[start_year:end_year] = df_5y.loc[y].values/5
 GHG_SSPs_Baseline_Reference_Low=df_yearly.cumsum()
 
@@ -650,18 +606,17 @@ years_full = np.arange(2025, 2101)
 df_yearly = pd.DataFrame(index=years_full,columns=df_5y.columns,dtype=float)
 df_yearly.loc[2025] = 0
 for y in df_5y.index:
-    start_year = y - 4   # 2030 -> 2026
-    end_year = y         # 2030 -> 2030
+    start_year = y - 4   
+    end_year = y         
     df_yearly.loc[start_year:end_year] = df_5y.loc[y].values/5
 GHG_SSPs_Baseline_Reference_High=df_yearly.cumsum()
 
-
 SSP_COLORS = {
-    'SSP1': '#1b9e77',  # 绿
-    'SSP2': '#4d4d4d',  # 暗灰，替代黑色，更柔和
-    'SSP3': '#d95f02',  # 橙
-    'SSP4': '#7570b3',  # 紫
-    'SSP5': '#e7298a'   # 红
+    'SSP1': '#1b9e77',  
+    'SSP2': '#4d4d4d',  
+    'SSP3': '#d95f02',  
+    'SSP4': '#7570b3',  
+    'SSP5': '#e7298a'   
 }
 
 # ===================== 不确定性区间（in-between shading） =====================
@@ -675,7 +630,6 @@ for col in GHG_SSPs_Baseline_Reference.columns:
     y_low  = GHG_SSPs_Baseline_Reference_Low[col]
     y_high = GHG_SSPs_Baseline_Reference_High[col]
 
-    # 阴影
     ax1.fill_between(
         GHG_SSPs_Baseline_Reference.index,
         y_low,
@@ -686,7 +640,6 @@ for col in GHG_SSPs_Baseline_Reference.columns:
         zorder=1
     )
 
-    # 上下限虚线（不进图例）
     ax1.plot(
         GHG_SSPs_Baseline_Reference.index,
         y_low,
@@ -722,7 +675,7 @@ for col in GHG_SSPs_Baseline_Reference.columns:
     )
 
 # ===================== 坐标轴与风格 =====================
-# ax1.set_xlabel('Year', fontsize=12)
+
 ax1.set_ylabel('GHG emissions (Mt CO$_2$-eq)', fontsize=11)
 
 ax1.spines['top'].set_visible(False)
@@ -734,7 +687,6 @@ ax1.tick_params(axis='both', which='major', length=4, width=0.8, labelsize=10)
 ax1.tick_params(axis='both', which='minor', length=2, width=0.5)
 
 ax1.set_xlim(2025, 2100)
-# xticks = [2025] + list(range(2030, 2101, 10))
 xticks = list(range(2030, 2101, 10))
 ax1.set_xticks(xticks)
 ax1.set_xticklabels(xticks, rotation=0)
@@ -759,26 +711,22 @@ scenario_data=pd.read_excel(add + '02-data sources/ship_stock_yxn/SSP-based_dema
 ship_type_list=list(scenario_data['Ship_type'].unique())
 
 ship_type_colors = {
-    'Bulk carriers': '#8da0cb',          # 保留
-    'Chemical tankers': '#9ecae1',       # 稍微偏绿一点
-    'Container ships': '#ef8a62',        # 保留为唯一主暖色
-    'Crude oil tankers': '#969696',      # 比现在更深一点（区分灰）
-    'Gas tankers': '#fddbc7',            # 保留
-    'General cargo ships': '#bcbddc',    # 蓝→紫灰，拉开和地图
-    'Oil product tankers': '#f4a582',    # 保留
-    'Refrigerated cargo ships': '#d9d9d9',# 保留
-    'Ro-Ro cargo ships': '#e0f3f8'       # 偏青而非蓝
+    'Bulk carriers': '#8da0cb',  
+    'Chemical tankers': '#9ecae1',       
+    'Container ships': '#ef8a62',        
+    'Crude oil tankers': '#969696',      
+    'Gas tankers': '#fddbc7',            
+    'General cargo ships': '#bcbddc',    
+    'Oil product tankers': '#f4a582',    
+    'Refrigerated cargo ships': '#d9d9d9',
+    'Ro-Ro cargo ships': '#e0f3f8'       
 }
 colors = [ship_type_colors[ship] for ship in ship_type_list]
 
-# 1. 明确子图分配
-# ax2-ax6 用于画图 (共5个情境)
 plot_axes = [ax2, ax3, ax4, ax5, ax6]
-# ax7 专门留出做图例
 
-# 2. 循环绘制 ax2-ax6
 for scr, ax_sub in zip(scenario_list_Baseline[:5], plot_axes):
-    # 读取与数据处理
+    
     df = pd.read_csv(f"{add}/03-results/{scr}/Reference/carbon_by_ship_all_primary.csv").astype(int).set_index('year')
     df[ship_type_list] = df[ship_type_list] / 1e9 / 5.0
     
@@ -795,10 +743,9 @@ for scr, ax_sub in zip(scenario_list_Baseline[:5], plot_axes):
     alpha=1,
     color=colors)
     
-    # 子图细节设置
-    ax_sub.set_title(scr.replace('-Baseline',''), fontsize=12, pad=10) # 使用情境名作为标题
+    ax_sub.set_title(scr.replace('-Baseline',''), fontsize=12, pad=10) 
     ax_sub.set_ylabel('GHG emissions (Mt CO$_2$-eq)', fontsize=10)
-    ax_sub.set_xlabel('') # 移除 X 轴标题 Year，保持简洁
+    ax_sub.set_xlabel('') 
     ax_sub.tick_params(direction='in', labelsize=7)
     ax_sub.tick_params(axis='x', rotation=90)
 
@@ -807,17 +754,16 @@ handles, labels = ax_sub.get_legend_handles_labels()
 ax7.axis('off')
 
 ax7.legend(
-    handles[::-1],                  # <-- 逆序传入 handles
-    labels[::-1],                   # <-- 逆序传入 labels
+    handles[::-1],                  
+    labels[::-1],                   
     loc='center',
-    title='Ship types',             # 标题文本
-    title_fontsize=12,             # 标题字体大小
+    title='Ship types',             
+    title_fontsize=12,             
     frameon=False,
     fontsize=10,
-    handletextpad=0.8,             # 图例符号与标签间距
-    labelspacing=0.5               # 标签之间的间距
+    handletextpad=0.8,             
+    labelspacing=0.5               
 )
-########## 子图 ##########
 
 plt.tight_layout()
 
@@ -830,7 +776,6 @@ plt.show()
 # Figure 3 | SSP2 Baseline / 26 / 19 + Circular strategies
 # ==================================================================================================
 
-# ============================ 设置参数 ============================
 material_list_final = ['Steel', 'Glass_wool', 'Paint', 'Plastic', 'Ceramics', 
                        'Copper', 'Bronze', 'Aluminium', 'Zinc', 'Wood']
 
@@ -844,20 +789,20 @@ display_names = ['Baseline', 'RCP2.6', 'RCP1.9']
 
 strategy_colors = {
     # --- 基础/弱化基准 ---
-    'Reference':             '#D3D3D3',  # 浅灰（保持弱化）
+    'Reference':             '#D3D3D3',
 
-    # --- 供应侧技术簇 (Supply-side): 统一为暖色调 ---
-    'Electricity_decarbonization':     '#E69F00',  # 暗橙（能源转型）
-    'Green_steel':           '#F0E442',  # 亮金黄（绿钢/新技术，与暗橙天然属于一个色族）
-    'Supply_side':           '#D55E00',  # 朱红/红棕（供应侧总体 = 橙 + 黄的渐进聚变）
+    # --- 供应侧技术簇 (Supply-side) ---
+    'Electricity_decarbonization':     '#E69F00', 
+    'Green_steel':           '#F0E442',  
+    'Supply_side':           '#D55E00',  
 
-    # --- 需求侧资源簇 (Demand-side): 统一为冷色调 ---
-    'Lifetime_extension':    '#56B4E9',  # 天蓝（时间/延长寿命）
-    'Material_recovery':     '#0072B2',  # 深蓝（空间/物质循环）
-    'Demand_side':           '#009E73',  # 纯绿（需求侧总体 = 天蓝 + 深蓝合流后的生命绿）
+    # --- 需求侧资源簇 (Demand-side) ---
+    'Lifetime_extension':    '#56B4E9', 
+    'Material_recovery':     '#0072B2',  
+    'Demand_side':           '#009E73',  
 
     # --- 终极系统集成 ---
-    'Integrated_strategies': '#332288'   # 深紫蓝（冷暖交融的系统终点）
+    'Integrated_strategies': '#332288'  
 }
 
 # ============================ 读取数据 ============================
@@ -879,14 +824,14 @@ plt.rcParams.update({
     'font.family': 'Arial'
 })
 
-fig, ax = plt.subplots(figsize=(14, 7), dpi=300)  # 大画布 & 高分辨率
-bar_width = 0.105  # 每个柱宽
+fig, ax = plt.subplots(figsize=(14, 7), dpi=300) 
+bar_width = 0.105
 x_group = np.arange(len(energy_scenarios))
 
 for g, e in enumerate(energy_scenarios):
 
     n = len(scenarios)
-    offsets = (np.arange(n) - (n-1)/2) * bar_width  # 居中排列
+    offsets = (np.arange(n) - (n-1)/2) * bar_width  
 
     for i, s in enumerate(scenarios):
         val = df_total.loc[f'{e}_{s}', 'Total']
@@ -900,16 +845,14 @@ for g, e in enumerate(energy_scenarios):
             edgecolor='none'
         )
 
-        # ------------------- 在柱子顶端添加数字 -------------------
         ax.text(
             x_group[g] + offsets[i],
-            val + 0.005*df_total['Total'].max(),  # 顶端偏移
+            val + 0.005*df_total['Total'].max(),  
             f'{val:.0f}',
             ha='center', va='bottom',
             fontsize=10.5
         )
 
-# ============================ X轴 & Y轴 ============================
 ax.set_xticks(x_group)
 ax.set_xticklabels(display_names, fontsize=12)
 
@@ -917,7 +860,6 @@ ax.tick_params(axis='y', labelsize=11)
 ax.set_ylabel('Cumulative emissions (Mt CO$_2$-eq)', fontsize=14)
 ax.set_ylim(0, df_total['Total'].max()*1.10)
 
-# ============================ 样式 ============================
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 
@@ -926,8 +868,6 @@ ax.spines['bottom'].set_linewidth(0.8)
 
 ax.grid(axis='y', linestyle='--', linewidth=0.4, alpha=0.5)
 
-# ============================ 图例 ============================
-# 只显示每种策略一次
 legend_scenarios = scenarios
 handles = [
     plt.Rectangle((0,0), 1, 1,
@@ -941,8 +881,7 @@ ax.legend(handles, legend_scenarios, frameon=False, fontsize=11, loc='upper righ
 
 plt.tight_layout()
 
-# ============================ 保存 ============================
-plt.savefig(add + '/04-figures/Fig-3-SSP2-RCPs-strategies.jpg', dpi=600, bbox_inches='tight')  # 高分辨率位图
+plt.savefig(add + '/04-figures/Fig-3-SSP2-RCPs-strategies.jpg', dpi=600, bbox_inches='tight')
 plt.show()
 
 
@@ -1007,15 +946,15 @@ ax_legend.axis('off')
 legend_handles = [
     mpatches.Patch(color=colors[i], label=ship_type_list[i]) 
     for i in range(len(ship_type_list))
-][::-1]  # <--- 在这里加一个切片，一键倒序
+][::-1]
 
 ax_legend.legend(
     handles=legend_handles, 
-    loc="center left",     # 改为居中左侧，在空位中更好看
+    loc="center left",
     ncol=1, 
     frameon=False, 
     fontsize=11,
-    title="Ship Types",    # 可选：给图例加个标题
+    title="Ship Types",
     title_fontsize=13
 )
 
@@ -1039,37 +978,30 @@ import matplotlib.patches as mpatches
 import pandas as pd
 import numpy as np
 
-# --- 1. 顶刊色彩与参数配置 ---
-# 请确保此前已定义好 ship_type_list 和 ship_type_colors 字典
 colors = [ship_type_colors[ship_type] for ship_type in ship_type_list]
 
 scenarios = ['SSP2-26', 'SSP2-19']
 end_year = 2100
 
-# 画布微调：移除全局 sharey=True 避免一二行纵轴强行统一而无法看清
 fig, axes = plt.subplots(
     nrows=2, 
     ncols=2, 
-    figsize=(9.0, 6.5),  # 稍微放高一点，给两行不同类型的图更充足的垂直空间
+    figsize=(9.0, 6.5),
 )
 axes_flat = axes.flatten()
 
-# 创建用于后两行统一纵轴的边界变量
 max_inflow = 0
 min_outflow = 0
 
-# --- 2. 第一行：绘制 Ship Stock (堆叠面积图) ---
 for i in range(2):
     ax = axes_flat[i]
     
-    # 读取并归一化数据
     ship_stock = pd.read_csv(add + '/03-results/' + scenarios[i] + '/Reference/ship_stock.csv')
     ship_stock.set_index('year', drop=True, inplace=True)
     ship_stock.loc[:, ship_type_list] = ship_stock.loc[:, ship_type_list] / 1e9
     
     ship_stock.to_csv(add + '04-figures/Fig.S2_'+scenarios[i]+'_stock'+'.csv')
     
-    # 绘制堆叠面积图
     ax.stackplot(
         ship_stock.index,
         ship_stock[ship_type_list].T,
@@ -1080,13 +1012,11 @@ for i in range(2):
         linewidth=0.3
     )
     
-    # X 轴精细化设置：确保 2025 刻度完美显现并对齐
     target_ticks = np.arange(2025, 2101, 15)  
     ax.set_xticks(target_ticks)
     ax.set_xticklabels(target_ticks, rotation=45, fontsize=8)
     ax.set_xlim(2025, 2100)
     
-    # Y 轴格式化 (纠正单位为学术严谨的 LDT)
     max_y = np.sum(ship_stock.loc[end_year, ship_type_list]) * 1.1
     ax.set_ylim(0, max_y)
     ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.2f'))
@@ -1099,8 +1029,6 @@ for i in range(2):
     ax.set_title(title_dict.get(scenarios[i], scenarios[i]), loc='center', fontsize=10, weight="bold", pad=12)
     ax.set_xlabel("") 
 
-# --- 3. 第二行：绘制 Ship Inflow & Outflow (双向条形图) ---
-# 预读数据，提前统一第二行两个子图的 Y 轴范围，确保可比性
 inflow_data_list = []
 outflow_data_list = []
 
@@ -1117,12 +1045,10 @@ for i in range(2, 4):
 global_y_max = max_inflow * 1.2
 global_y_min = min_outflow * 1.2
 
-# 正式绘制第二行
 for i in range(2, 4):
     ax = axes_flat[i]
     scen = scenarios[i-2]
     
-    # 1. 干净利落地读取数据
     ship_inflow = pd.read_csv(add + '/03-results/' + scen + '/Reference/ship_inflow.csv').set_index('year', drop=True) / 1e6 / 5
     ship_outflow = pd.read_csv(add + '/03-results/' + scen + '/Reference/ship_outflow.csv').set_index('year', drop=True) * (-1) / 1e6 / 5
     
@@ -1132,29 +1058,23 @@ for i in range(2, 4):
     print(scen)
     print(ship_inflow[ship_type_list].sum(axis=1) + ship_outflow[ship_type_list].sum(axis=1))
     
-    # 2. 【核心减负】用 Pandas 优雅的一行流直接画完堆叠柱状图！
     ship_inflow[ship_type_list].plot(kind="bar", stacked=True, ax=ax, color=colors, width=0.7, alpha=0.85, legend=False)
     ship_outflow[ship_type_list].plot(kind="bar", stacked=True, ax=ax, color=colors, width=0.7, alpha=0.85, legend=False)
     
-    # 3. 规整界面与基准线
     ax.axhline(y=0, color='black', linewidth=0.6)
     ax.set_xlabel("")
     
-    # 3. 规整界面与基准线
     all_years = ship_inflow.index.astype(int).tolist()
     ticks = [all_years.index(y) for y in range(2030, 2101, 10) if y in all_years]
-    labels = [int(y) for y in range(2030, 2101, 10) if y in all_years] # 强转 int
+    labels = [int(y) for y in range(2030, 2101, 10) if y in all_years]
     ax.set_xticks(ticks) 
-    ax.set_xticklabels(labels, rotation=45, ha='right', fontsize=8) # ha='right' 让斜体对齐更美观
+    ax.set_xticklabels(labels, rotation=45, ha='right', fontsize=8) 
     
     ax.set_xlim(-0.5, len(ship_inflow) - 0.5)
     
-    # 5. 轴范围控制
     ax.set_ylim(global_y_min, global_y_max)
     ax.tick_params(axis='y', labelsize=8)
     
-# --- 4. 全局唯一公共图例（结合色彩一键倒序） ---
-# 使用 [::-1] 倒序排列，保证图例自上而下的颜色顺序与堆叠图在视觉上的“由上至下”高度吻合
 legend_handles = [
     mpatches.Patch(color=colors[k], label=ship_type_list[k]) 
     for k in range(len(ship_type_list))
@@ -1163,7 +1083,7 @@ legend_handles = [
 fig.legend(
     handles=legend_handles, 
     loc="center right", 
-    bbox_to_anchor=(1.06, 0.75), # 1.16 将图例稳妥推至子图最右侧边缘外，杜绝遮挡
+    bbox_to_anchor=(1.06, 0.75), 
     ncol=1, 
     frameon=False, 
     fontsize=9,
@@ -1172,11 +1092,9 @@ fig.legend(
     alignment='left'
 )
 
-# --- 5. 布局优化与高质量导出 ---
 plt.tight_layout()
-fig.subplots_adjust(right=0.82, hspace=0.2) # 预留18%的右侧空间给公用图例，并拉开上下两行间距
+fig.subplots_adjust(right=0.82, hspace=0.2) 
 
-# 导出符合 Nature 子刊审稿标准的高清大图
 fig.savefig(add + '04-figures/FigS2-Prospective_ship_stock_under_RCPs.jpg', dpi=600, bbox_inches='tight')
 plt.show()
 
@@ -1196,20 +1114,20 @@ material_list=['Steel', 'Glass_wool', 'Paint', 'Plastic', 'Ceramics', 'Copper', 
 
 strategy_colors =  {
     # --- 基础/弱化基准 ---
-    'Reference':             '#D3D3D3',  # 浅灰（保持弱化）
+    'Reference':             '#D3D3D3',
 
-    # --- 供应侧技术簇 (Supply-side): 统一为暖色调 ---
-    'Electricity_decarbonization':     '#E69F00',  # 暗橙（能源转型）
-    'Green_steel':           '#F0E442',  # 亮金黄（绿钢/新技术，与暗橙天然属于一个色族）
-    'Supply_side':           '#D55E00',  # 朱红/红棕（供应侧总体 = 橙 + 黄的渐进聚变）
+    # --- 供应侧技术簇 (Supply-side) ---
+    'Electricity_decarbonization':     '#E69F00',
+    'Green_steel':           '#F0E442',  
+    'Supply_side':           '#D55E00',  
 
-    # --- 需求侧资源簇 (Demand-side): 统一为冷色调 ---
-    'Lifetime_extension':    '#56B4E9',  # 天蓝（时间/延长寿命）
-    'Material_recovery':     '#0072B2',  # 深蓝（空间/物质循环）
-    'Demand_side':           '#009E73',  # 纯绿（需求侧总体 = 天蓝 + 深蓝合流后的生命绿）
+    # --- 需求侧资源簇 (Demand-side) ---
+    'Lifetime_extension':    '#56B4E9',
+    'Material_recovery':     '#0072B2', 
+    'Demand_side':           '#009E73', 
 
     # --- 终极系统集成 ---
-    'Integrated_strategies': '#332288'   # 深紫蓝（冷暖交融的系统终点）
+    'Integrated_strategies': '#332288'
 }
 
 fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(8, 6))
@@ -1226,8 +1144,7 @@ for i in range(3):
     
     for st in Strategies:
        df= pd.read_csv(add + '/03-results/' + SSP_scenarios[i] + '/' + str(st) + '/carbon_total.csv')
-       # df.set_index('year',drop=True,inplace=True)
-       df['Total']=df[material_list].sum(axis=1)/1e9/5 #average to per year
+       df['Total']=df[material_list].sum(axis=1)/1e9/5
        df_sc[st]=df['Total'].tolist()
        
        full_years = pd.DataFrame({'year': range(2026, 2101)})
@@ -1263,11 +1180,11 @@ legend_handles = [mpatches.Patch(color=strategy_colors[Strategies[i]], label=Str
 
 ax_legend.legend(
     handles=legend_handles, 
-    loc="center left",     # 改为居中左侧，在空位中更好看
+    loc="center left", 
     ncol=1, 
     frameon=False, 
     fontsize=10,
-    title="Scenarios",    # 可选：给图例加个标题
+    title="Scenarios",
     title_fontsize=12
 )        
 
@@ -1287,52 +1204,41 @@ labels = ['a.', 'b.', 'c.', 'd.']
 fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 axes = axes.flatten()
 
-# --- 1. 统一色阶设置 ---
-# 根据你的数据范围（约 3.8 到 6.9 Gt），手动设定统一的色标尺
 v_min, v_max = 2, 8
 fixed_levels = np.linspace(v_min, v_max, 10)
 
 for i, strategy in enumerate(strategies):
     ax = axes[i]
 
-    # 读取数据
     full_save_path = os.path.join(add, '03-results', 'Sensitivity', f"{strategy}.csv")
     df = pd.read_csv(full_save_path)
     df = df.set_index('Lifetime')
     
     (df / 1e12).to_csv(add + '04-figures/Fig.S4_'+strategy+'.csv')
     
-    x_coords = df.index.astype(int)          # Lifetime
-    y_coords = df.columns.astype(float)*100  # Intensity %
+    x_coords = df.index.astype(int)          
+    y_coords = df.columns.astype(float)*100  
     X_grid, Y_grid = np.meshgrid(x_coords, y_coords)
     
-    # 转换为 Gt 并转置以匹配 meshgrid
     Z = (df.values / 1e12).T 
     
-    # --- 2. 核心：强制所有子图使用相同的 levels 和范围 ---
-    # extend='both' 确保万一数据超出 3.5-7.5 范围也能正常显示颜色
     cp = ax.contourf(X_grid, Y_grid, Z, levels=fixed_levels, cmap='RdYlGn_r', alpha=0.9, extend='both')
     
-    # --- 3. 统一 Colorbar 设置 ---
     cbar = fig.colorbar(cp, ax=ax, pad=0.02, shrink=1.0, aspect=15)
     cbar.set_label('$\mathrm{Gt\ CO_2}$-eq', rotation=90, labelpad=6, fontsize=9)
-    # 强制 colorbar 的刻度显示我们定义的 fixed_levels
+    
     cbar.set_ticks(fixed_levels)
     cbar.set_ticklabels([f"{x:.1f}" for x in fixed_levels])
     
-    # 标题与标签设置
     ax.set_title(strategy.replace('_', ' '), pad=16, loc='left')
     ax.text(-0.08, 1.105, labels[i], transform=ax.transAxes, 
             fontsize=15, fontweight='bold', va='top')
     
-    # 坐标轴美化
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_xlabel('Lifetime (Years)')
     ax.set_ylabel('Strategy intensity (%)', labelpad=0)
 
-# 5. 整体布局优化
-
-plt.tight_layout(rect=[0, 0.03, 1, 0.95]) # 为总标题留出空间
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
 fig.savefig(add + '04-figures/FigS4-Sensitivity.jpg', dpi=600, bbox_inches='tight')
 plt.show()  
@@ -1348,7 +1254,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator, PercentFormatter
 
-# ===== 全局参数设置 =====
 plt.style.use("default")
 plt.rcParams.update({
     'font.family': 'Arial',
@@ -1366,22 +1271,19 @@ plt.rcParams.update({
     'figure.facecolor': 'white',
 })
 
-# ===== 数据与变量 =====
+
 scenarios = [ 'Electricity_decarbonization', 'Lifetime_extension', 'Material_recovery', 'Integrated_strategies']
 material_list=['Steel', 'Glass_wool', 'Paint', 'Plastic', 'Ceramics', 'Copper', 'Bronze', 'Aluminium', 'Zinc', 'Wood']
 
-# 颜色列表（柔和明亮，避免过多重复）
 color_list = [
     "#1b9e77", "#66a61e", "#7570b3", "#e6ab02",
     "#a6761d", "#d95f02", "#666666", "#8dd3c7", "#b3de69"
 ]
 
-# ===== 基础数据：Base scenario =====
 df0 = pd.read_csv(add + '/03-results/SSP2-26/Reference/carbon_total.csv').set_index('year')
 
-# ===== 创建子图 =====
 fig, axes = plt.subplots(2, 2, figsize=(18, 12), dpi=300)
-axes = axes.flatten()  # 扁平化便于索引
+axes = axes.flatten()  
 
 subplot_labels = ['a', 'b', 'c', 'd']
 
@@ -1393,28 +1295,23 @@ for i, sc in enumerate(scenarios):
     
     ax = axes[i]
     
-    # 左上角添加子图编号
     ax.text(
-        -0.09, 1.07,                        # 位置：相对坐标
-        subplot_labels[i],                   # a/b/c/d
-        transform=ax.transAxes,              # 相对坐标
+        -0.09, 1.07,                        
+        subplot_labels[i],                   
+        transform=ax.transAxes,              
         fontsize=20,
         fontweight='bold',
         va='top', ha='left'
     )
     
-    # 读取场景数据
     df = pd.read_csv(add + f'/03-results/SSP2-26/{sc}/carbon_total.csv').set_index('year')
     
-    # 计算减碳潜力（比例，小数）
     df_reduction = (df0[material_list].sum(axis=0) - df[material_list].sum(axis=0)) / df0[material_list].sum(axis=0)
     print(df_reduction)
     df_material_strategy[sc]=df_reduction
     
-    # 横坐标位置
     x = np.arange(len(material_list))
     
-    # 柱状图
     bars = ax.bar(
         x, 
         df_reduction, 
@@ -1424,35 +1321,29 @@ for i, sc in enumerate(scenarios):
         alpha=0.85
     )
     
-    # x轴标签
     ax.set_xticks(x)
     ax.set_xticklabels(material_list, rotation=45, ha='right', fontsize=14)
     
-    # y轴百分比
     ax.yaxis.set_major_formatter(PercentFormatter(1.0))
     ax.set_ylim(0, 1.0)
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     
-    # 添加柱顶百分比标签
     for bar in bars:
         height = bar.get_height()
         ax.text(
             bar.get_x() + bar.get_width()/2, 
-            height + 0.02,                  # 顶端稍偏移
+            height + 0.02,       
             f"{height*100:.0f}%", 
             ha='center', va='bottom', fontsize=14
         )
     
-    # 子图样式
     ax.set_title(sc.replace("_", " "), fontsize=18, pad=10)
     ax.tick_params(axis='y', labelsize=12)
     ax.set_ylabel("GHG Reduction Potential", fontsize=14, labelpad=-2)
     ax.grid(False)
 
-# ===== 调整布局 =====
 plt.tight_layout(rect=[0, 0.03, 1, 0.97])
 
-# ===== 保存图形 =====
 df_material_strategy.to_csv(add + '/04-figures/Fig.S5_Strategy potential by material.csv')
 
 plt.savefig(add + '/04-figures/FigS5-Decarbonization potential by material.jpg', dpi=600, bbox_inches='tight')
@@ -1465,10 +1356,9 @@ plt.show()
 # ==================================================================================================
 
 
-# ===== 全局参数设置 =====
 plt.style.use("default")
 plt.rcParams.update({
-    'font.family': 'Arial',       # Nature/Science 常用字体
+    'font.family': 'Arial',       
     'axes.linewidth': 1.0,
     'axes.edgecolor': 'black',
     'axes.labelsize': 12,
@@ -1483,15 +1373,14 @@ plt.rcParams.update({
     'figure.facecolor': 'white',
 })
 
-# ===== 数据与变量 =====
 fig, axes = plt.subplots(2, 4, figsize=(14, 8), constrained_layout=False)
 
 scenarios = ['Material_recovery', 'Demand_side']
 material_list = ['Steel', 'Copper', 'Bronze', 'Aluminium']
 
 color_list = [
-    '#3182BD',  # 蓝色，沉稳、材料/基础
-    '#FD8D3C'   # 橙色，强调、策略/能源
+    '#3182BD',  
+    '#FD8D3C'   
 ]
 
 line_color = '#333333'
@@ -1500,7 +1389,6 @@ line_color = '#333333'
 Recovery=pd.read_excel(add + '02-data sources/Recycling/Recovery_rate.xlsx', sheet_name='Sheet1')
 Recovery.set_index('Material', inplace=True, drop=True)
             
-# === 计算每种材料最大值（统一y轴范围） ===
 material_max = {}
 
 for mat in material_list:
@@ -1511,9 +1399,8 @@ for mat in material_list:
         df3 = pd.read_csv(add + f'/03-results/SSP2-Baseline/{sc}/material_reuse.csv')[material_list]/1e9
         total = df1[mat] + df2[mat] + df3[mat]
         max_val = max(max_val, total.max())
-    material_max[mat] = max_val * 1.15  # 略放大 15%
+    material_max[mat] = max_val * 1.15
 
-# ===== 主循环绘图 =====
 for i, scen in enumerate(scenarios):
     df1 = pd.read_csv(add + f'/03-results/SSP2-Baseline/{scen}/material_primary.csv').set_index('year')
     df2 = pd.read_csv(add + f'/03-results/SSP2-Baseline/{scen}/material_recycle.csv').set_index('year')
@@ -1532,7 +1419,6 @@ for i, scen in enumerate(scenarios):
         
         df_total.to_csv(add + '04-figures/Fig.S6_'+scen+'_'+mat+'.csv')
         
-        # === 主图堆叠柱 ===
         bars = df_total[['Secondary', 'Primary']].plot(
             kind='bar',
             stacked=True,
@@ -1544,14 +1430,11 @@ for i, scen in enumerate(scenarios):
             alpha=0.8
         )
         
-        # 横坐标显示整数
         x = np.arange(len(df_total))
         ax.set_xticks(x)
         ax.set_xticklabels(df_total.index.astype(int), rotation=80, fontsize=8)
 
-        # === 次轴曲线（关键修复）===
-        
-        x = np.arange(len(df_total))  # 与柱状图的横坐标对齐
+        x = np.arange(len(df_total))
         
         ax2 = ax.twinx()
         ax2.plot(
@@ -1564,12 +1447,11 @@ for i, scen in enumerate(scenarios):
             zorder=5,
             label='Secondary share'
         )
-        ax2.set_ylim(0, 1)  # 比例固定在 0–1
+        ax2.set_ylim(0, 1)  
         ax2.set_yticks(np.linspace(0, 1, 5))
         ax2.set_yticklabels([f'{int(v*100)}%' for v in np.linspace(0, 1, 5)], fontsize=9)
         ax2.tick_params(axis='y', labelsize=9, width=0.8)
         
-        # === y轴统一范围 ===
         ax.set_ylim(0, material_max[mat])
         ax.tick_params(axis='x', rotation=90, labelsize=8)
         ax.tick_params(axis='y', labelsize=9, width=0.8)
@@ -1578,34 +1460,31 @@ for i, scen in enumerate(scenarios):
         if j > 0:
             ax.set_ylabel("")
         else:
-            ax.set_ylabel("")  # 去掉默认的 ylabel
+            ax.set_ylabel("")  
         
-            # 第一列：scen（大字体）
             ax.text(
-                -0.27, 0.5+0.01,          # x 更靠左（控制整体位置）
+                -0.27, 0.5+0.01,          
                 scen.replace("_", " "),
                 transform=ax.transAxes,
                 va="center",
                 ha="center",
                 fontsize=14,
-                rotation=90  # 旋转 90 度
+                rotation=90  
             )
         
-            # 第二列：mass (Mt)（小字体）
             ax.text(
-                -0.16, 0.5,          # x 右移 → 变成第二列
+                -0.16, 0.5,          
                 "Mass (Mt)",
                 transform=ax.transAxes,
                 va="center",
                 ha="center",
                 fontsize=12,
-                rotation=90  # 旋转 90 度
+                rotation=90  
             )
         
         if i==0:
             ax.set_title(mat, fontsize=14, pad=6)
         
-        # === 细节优化 ===
         ax.grid(False)
         ax2.grid(False)
         for spine in ax.spines.values():
@@ -1613,7 +1492,6 @@ for i, scen in enumerate(scenarios):
         ax.yaxis.set_minor_locator(AutoMinorLocator())
 
 
-# ===== 全局图例与标题 =====
 handles = [
     plt.matplotlib.patches.Patch(color=color_list[0], label='Secondary'),
     plt.matplotlib.patches.Patch(color=color_list[1], label='Primary'),
